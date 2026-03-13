@@ -70,7 +70,7 @@ with col3:
 
 if new_game:
     st.session_state.attempts = 0
-    st.session_state.secret = random.randint(1, 100)
+    st.session_state.secret = random.randint(low, high)  #FIX: Milestone 4 — replaced hardcoded randint(1,100) with randint(low,high) so New Game respects selected difficulty range (Claude Agent)
     st.success("New game started.")
     st.rerun()
 
