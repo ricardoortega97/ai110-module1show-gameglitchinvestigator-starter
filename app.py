@@ -28,8 +28,12 @@ low, high = get_range_for_difficulty(difficulty)
 st.sidebar.caption(f"Range: {low} to {high}")
 st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 
-if "secret" not in st.session_state:
+if "secret" not in st.session_state or st.session_state.get("difficulty") != difficulty:  #FIX: Milestone 10 — added difficulty mismatch check so changing the selector regenerates the secret within the new range and resets game state (Claude Agent)
     st.session_state.secret = random.randint(low, high)
+    st.session_state.difficulty = difficulty
+    st.session_state.attempts = 0
+    st.session_state.status = "playing"
+    st.session_state.history = []
 if "attempts" not in st.session_state:
     st.session_state.attempts = 0  #FIX: Changed from 1 to 0; first submission now correctly registers as attempt #1
 
