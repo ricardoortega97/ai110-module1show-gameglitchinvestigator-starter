@@ -39,8 +39,11 @@ It wrote the code, ran away, and now the game is unplayable.
 
  - [x] **Pytest (Advance Edge-Case Testing)**:
 
-   - **Off by One Tests**
+   - **Off by One Tests:**
    ![image1](./images/off_one_tests.png)
 
-   -  **Even Strings Attempts**:
+   -  **Even Strings Attempts:**
       ![image6](./images/even_stings.png)
+   
+   - **Get Difficulties:**
+      ![image2](/images/levels.png)

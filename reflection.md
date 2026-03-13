@@ -40,11 +40,11 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 - How did you decide whether a bug was really fixed?  
 
-  **Response**: I would look at the logic of the code and compare the changes made with the AI and I. Run pytest with the edge cases for it. 
+  **Response**: I would look at the logic of the code and compare the changes made with the AI and I. Run pytest with the edge cases for it. Once the test pass, I refresh the page and do final confirmations in the streamlit application. 
 
 - Describe at least one test you ran (manual or using pytest) and what it showed you about your code.
 
-  **Response**: Did the first pytest and all passed
+  **Response**: From what I understand running the test case helps with ensuring the player will not experience with running into the same issue the edge case was provided in. I looked into the test cases that was created and sounds reasonable that it will pass within that case. 
   
 
 - Did AI help you design or understand any tests? How?  
@@ -68,6 +68,8 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
 
 **Response**: A strategy I can do is create a milestone that I can work with along with the agent. This will help out reducing some tokens usage and ensure neither I nor the agent will be looping around to the same context. 
+
 I can create a milestone plan that provides a small context of the app and only document the ones that the agent found bugs. 
 AI does help adapt faster but there is also pros/cons using it. If one knows the context of the code, there is an advantage and can ship the product faster/fix bugs/update.  The disadvantage I can see is to blindly just use the AI to apply changes without a human checking. 
+
 How I will be using AI is to assist me were I lack, educate me how I can improve with feedback, apply testing, and documentation to better understand the code. 

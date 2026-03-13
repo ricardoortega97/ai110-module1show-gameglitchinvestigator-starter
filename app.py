@@ -44,7 +44,7 @@ if "history" not in st.session_state:
 st.subheader("Make a guess")
 
 st.info(
-    f"Guess a number between 1 and 100. "
+    f"Guess a number between {low} and {high}. "  #FIX: Milestone 3 — replaced hardcoded 1 and 100 with {low}/{high} variables so banner reflects selected difficulty (Claude Agent)
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
 )
 
