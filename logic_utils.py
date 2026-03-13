@@ -36,17 +36,18 @@ def parse_guess(raw: str):
 
 def check_guess(guess, secret):
     """
-    Compare guess to secret and return (outcome, message).
+    Compare guess to secret and return outcome.
 
     outcome examples: "Win", "Too High", "Too Low"
     """
     #FIX: Refactored from app.py stub into logic_utils.py; hint messages corrected (Too High→LOWER, Too Low→HIGHER) using Claude Agent mode
+    #FIX: Milestone 9 — returns plain outcome string (not tuple) so tests assert == "Win" / "Too High" / "Too Low" (Claude Agent)
     if guess == secret:
-        return "Win", "🎉 Correct!"
+        return "Win"
     if guess > secret:
-        return "Too High", "📉 Go LOWER!"
+        return "Too High"
     else:
-        return "Too Low", "📈 Go HIGHER!"
+        return "Too Low"
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):

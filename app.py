@@ -20,6 +20,7 @@ attempt_limit_map = {
     "Normal": 8,
     "Hard": 5,
 }
+
 attempt_limit = attempt_limit_map[difficulty]
 
 low, high = get_range_for_difficulty(difficulty)
@@ -93,7 +94,9 @@ if submit:
         st.session_state.history.append(guess_int)
         secret = st.session_state.secret  #FIX: Milestone 6 — removed even/odd str cast; secret always int, preventing TypeError and impossible wins on even attempts (Claude Agent)
 
-        outcome, message = check_guess(guess_int, secret)
+        outcome = check_guess(guess_int, secret)  #FIX: Milestone 9 — check_guess now returns plain string; tuple unpacking removed (Claude Agent)
+        messages = {"Win": "🎉 Correct!", "Too High": "📉 Go LOWER!", "Too Low": "📈 Go HIGHER!"}  #FIX: Milestone 9 — messages dict added in app.py to map outcome→display string, keeping logic_utils pure (Claude Agent)
+        message = messages[outcome]
 
         if show_hint:
             st.warning(message)
