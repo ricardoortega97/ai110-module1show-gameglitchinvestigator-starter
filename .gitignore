@@ -48,3 +48,4 @@ claude.md
 .claudeignore
 
 bugFixPlan.md
+conftest.py

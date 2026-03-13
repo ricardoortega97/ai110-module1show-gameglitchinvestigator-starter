@@ -91,11 +91,7 @@ if submit:
         st.error(err)
     else:
         st.session_state.history.append(guess_int)
-
-        if st.session_state.attempts % 2 == 0:
-            secret = str(st.session_state.secret)
-        else:
-            secret = st.session_state.secret
+        secret = st.session_state.secret  #FIX: Milestone 6 — removed even/odd str cast; secret always int, preventing TypeError and impossible wins on even attempts (Claude Agent)
 
         outcome, message = check_guess(guess_int, secret)
 
