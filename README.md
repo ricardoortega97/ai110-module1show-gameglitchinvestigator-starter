@@ -42,5 +42,5 @@ It wrote the code, ran away, and now the game is unplayable.
    - **Off by One Tests**
    ![image1](./images/off_one_tests.png)
 
-   - [x] **Even Strings Attempts**:
+   -  **Even Strings Attempts**:
       ![image6](./images/even_stings.png)
