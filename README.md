@@ -35,9 +35,7 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 🚀 Stretch Features
 
-- [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
-
- - [x] **Pytest (Advance Edge-Case Testing):**
+ - [x] **Pytest (Advance Edge-Case Testing)**
 
    - **Off by One Tests:**
    ![image1](./images/off_one_tests.png)
@@ -47,3 +45,20 @@ It wrote the code, ran away, and now the game is unplayable.
    
    - **Get Difficulties:**
       ![image2](/images/levels.png)
+
+- [x] **Professional Documentation and Linting**
+
+   Notes: I used Copilot for this task, the process was a bit confusing in a way as I tried searching for the option **Generate Documents** smart action and it was no where to be found. I instead provided the context and attached the file. I also went above and beyond with checking outside of the requested file for no reason. Used a bit too much on the context while running and looping but somehow managed to update it with PEP 8 style compliance. 
+
+   
+
+- [x] **AI Model Comparison**
+
+   Thoughts: I have been using Copilot throughout my time using it in VSCode and never thought of trying another model. It was limited usage with checking minor issues, what can be improved, and generate some basic code. When I started to use Claude, the process was more flexible in a way since I created the agent, implement commands, and context was taken better. 
+
+   For example, I used Copilot for the documentation/linting and comply with PEP 8 with the Inline Chat to only recommend me with issues. 
+
+   **Inline chat**
+   ![doc_lint_indent](/images/doc_lint2.png)
+
+   With Claude and new techniques I learned in the course, I was able to apply better practices and management. 

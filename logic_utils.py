@@ -1,6 +1,17 @@
 def get_range_for_difficulty(difficulty: str):
-    """Return (low, high) inclusive range for a given difficulty."""
-    #FIX: Refactored from app.py stub into logic_utils.py using Claude Agent mode; Hard range corrected to 1–100 (was 1–50)
+    """Resolve the inclusive guessing range for a difficulty level.
+
+    Args:
+        difficulty: Difficulty label selected by the player.
+            Expected values are ``"Easy"``, ``"Normal"``, and ``"Hard"``.
+
+    Returns:
+        A 2-tuple ``(low, high)`` representing the inclusive numeric range used
+        to generate the secret number. Unknown values fall back to
+        ``(1, 100)``.
+    """
+    # FIX: Refactored from app.py stub into logic_utils.py using
+    # Claude Agent mode; Hard range corrected to 1-100 (was 1-50).
     if difficulty == "Easy":
         return 1, 20
     if difficulty == "Normal":
@@ -11,12 +22,23 @@ def get_range_for_difficulty(difficulty: str):
 
 
 def parse_guess(raw: str):
-    """
-    Parse user input into an int guess.
+    """Parse raw user input into an integer guess.
 
-    Returns: (ok: bool, guess_int: int | None, error_message: str | None)
+    The parser accepts integer text and also decimal text by truncating toward
+    zero via ``int(float(raw))`` for compatibility with existing game behavior.
+
+    Args:
+        raw: Raw input string from the UI.
+
+    Returns:
+        A tuple ``(ok, guess_int, error_message)`` where:
+        - ``ok`` is ``True`` when parsing succeeds, otherwise ``False``.
+        - ``guess_int`` is the parsed integer on success, otherwise ``None``.
+        - ``error_message`` is a user-facing validation message on failure.
+        - ``None`` is returned for ``error_message`` when parsing succeeds.
     """
-    #FIX: Refactored from app.py stub into logic_utils.py using Claude Agent mode
+    # FIX: Refactored from app.py stub into logic_utils.py using
+    # Claude Agent mode.
     if raw is None:
         return False, None, "Enter a guess."
 
@@ -35,13 +57,20 @@ def parse_guess(raw: str):
 
 
 def check_guess(guess, secret):
-    """
-    Compare guess to secret and return outcome.
+    """Evaluate a player's guess against the secret number.
 
-    outcome examples: "Win", "Too High", "Too Low"
+    Args:
+        guess: Player's numeric guess.
+        secret: Target number to compare against.
+
+    Returns:
+        Outcome string describing the result of the comparison:
+        ``"Win"``, ``"Too High"``, or ``"Too Low"``.
     """
-    #FIX: Refactored from app.py stub into logic_utils.py; hint messages corrected (Too High→LOWER, Too Low→HIGHER) using Claude Agent mode
-    #FIX: Milestone 9 — returns plain outcome string (not tuple) so tests assert == "Win" / "Too High" / "Too Low" (Claude Agent)
+    # FIX: Refactored from app.py stub into logic_utils.py; hint messages
+    # corrected (Too High -> LOWER, Too Low -> HIGHER) using Claude Agent mode.
+    # FIX: Milestone 9 - returns plain outcome string (not tuple) so tests
+    # assert == "Win" / "Too High" / "Too Low" (Claude Agent).
     if guess == secret:
         return "Win"
     if guess > secret:
@@ -51,8 +80,24 @@ def check_guess(guess, secret):
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
-    """Update score based on outcome and attempt number."""
-    #FIX: Refactored from app.py stub into logic_utils.py; removed even/odd branch so Too High always deducts using Claude Agent mode
+    """Compute the next score after a guess outcome.
+
+    Scoring rules:
+    - ``"Win"`` awards ``100 - 10 * (attempt_number + 1)`` points with a
+        minimum award of 10 points.
+    - ``"Too High"`` and ``"Too Low"`` each deduct 5 points.
+    - Any unknown outcome leaves the score unchanged.
+
+    Args:
+        current_score: Score before applying this guess result.
+        outcome: Outcome label from guess evaluation.
+        attempt_number: Zero-based attempt index for the current round.
+
+    Returns:
+        Updated score after applying the scoring rule.
+    """
+    # FIX: Refactored from app.py stub into logic_utils.py; removed even/odd
+    # branch so Too High always deducts using Claude Agent mode.
     if outcome == "Win":
         points = 100 - 10 * (attempt_number + 1)
         if points < 10:
