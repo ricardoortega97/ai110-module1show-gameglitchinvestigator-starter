@@ -25,19 +25,19 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [x] Describe the game's purpose.
-- [x] Detail which bugs you found.
-- [x] Explain what fixes you applied.
+- [x] Game: This is a guessing game with three levels - Normal, Easy, and Hard.
+- [x] How many Bugs?: Found a total of ten bugs with the assistance of AI. Some were found while playing the game and provided the context to the AI. 
+- [x] Fixes: I have a completion folder with details how they were fixed with some of them providing with test cases.
 
 ## 📸 Demo
 
-- [ ] [Insert a screenshot of your fixed, winning game here]
+   ![game_glitch](/images/game_glitch.gif)
 
 ## 🚀 Stretch Features
 
 - [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
 
- - [x] **Pytest (Advance Edge-Case Testing)**:
+ - [x] **Pytest (Advance Edge-Case Testing):**
 
    - **Off by One Tests:**
    ![image1](./images/off_one_tests.png)
