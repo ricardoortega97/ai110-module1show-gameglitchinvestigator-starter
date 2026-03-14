@@ -46,6 +46,17 @@ It wrote the code, ran away, and now the game is unplayable.
    - **Get Difficulties:**
       ![image2](/images/levels.png)
 
+- [x] **Feature Expansion via Agent Mode**
+
+   I requested the AI to implement a new feature to track the high score within the state with the list of 5 previous completed games. 
+
+   - Created two new logic functions: `get_high_score` will return the max value in the list of the previous scores; `record_completed_score` appends the score to the list, with a limit of 5 values, so it will update the list by slicing the limit backwards. 
+
+   - In the `app.py` file, there is a `completed_scores` within the session state that will record for each finished game, displaying the current and highest score. The outcome of "Win" is where holds additional session states that implements completed and scores to the logic. 
+
+   **Gif**
+   ![high_score](/images/high_score_feat.gif)
+
 - [x] **Professional Documentation and Linting**
 
    Notes: I used Copilot for this task, the process was a bit confusing in a way as I tried searching for the option **Generate Documents** smart action and it was no where to be found. I instead provided the context and attached the file. I also went above and beyond with checking outside of the requested file for no reason. Used a bit too much on the context while running and looping but somehow managed to update it with PEP 8 style compliance. 
@@ -62,3 +73,5 @@ It wrote the code, ran away, and now the game is unplayable.
    ![doc_lint_indent](/images/doc_lint2.png)
 
    With Claude and new techniques I learned in the course, I was able to apply better practices and management. 
+
+

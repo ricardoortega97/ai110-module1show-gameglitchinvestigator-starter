@@ -111,3 +111,42 @@ def update_score(current_score: int, outcome: str, attempt_number: int):
         return current_score - 5
 
     return current_score
+
+
+def record_completed_score(
+    previous_scores: list[int], score: int, limit: int = 5
+):
+    """Append a completed-game score and keep only the most recent entries.
+
+    Args:
+        previous_scores: Existing completed-game score history in play order.
+        score: Final score from the newly completed game.
+        limit: Maximum number of recent completed-game scores to retain.
+
+    Returns:
+        A new list containing the updated score history, trimmed to the most
+        recent ``limit`` entries.
+    """
+    updated_scores = list(previous_scores)
+    updated_scores.append(score)
+
+    if len(updated_scores) > limit:
+        updated_scores = updated_scores[-limit:]
+
+    return updated_scores
+
+
+def get_high_score(previous_scores: list[int]):
+    """Return the highest score from completed-game history.
+
+    Args:
+        previous_scores: Completed-game scores to evaluate.
+
+    Returns:
+        The maximum score in ``previous_scores`` or ``None`` when the history
+        is empty.
+    """
+    if not previous_scores:
+        return None
+
+    return max(previous_scores)

@@ -1,6 +1,13 @@
 import random
 import streamlit as st
-from logic_utils import get_range_for_difficulty, parse_guess, check_guess, update_score  #FIX: Added import after refactoring all logic out of app.py into logic_utils.py using Claude Agent mode
+from logic_utils import (
+    check_guess,
+    get_high_score,
+    get_range_for_difficulty,
+    parse_guess,
+    record_completed_score,
+    update_score,
+)
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
 
@@ -28,14 +35,23 @@ low, high = get_range_for_difficulty(difficulty)
 st.sidebar.caption(f"Range: {low} to {high}")
 st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 
-if "secret" not in st.session_state or st.session_state.get("difficulty") != difficulty:  #FIX: Milestone 10 — added difficulty mismatch check so changing the selector regenerates the secret within the new range and resets game state (Claude Agent)
+if (
+    "secret" not in st.session_state
+    or st.session_state.get("difficulty") != difficulty
+):
+    # FIX: Milestone 10 - changing difficulty regenerates the secret within
+    # the selected range and resets the active round.
     st.session_state.secret = random.randint(low, high)
     st.session_state.difficulty = difficulty
     st.session_state.attempts = 0
+    st.session_state.score = 0
     st.session_state.status = "playing"
     st.session_state.history = []
+    st.session_state.score_recorded = False
 if "attempts" not in st.session_state:
-    st.session_state.attempts = 0  #FIX: Changed from 1 to 0; first submission now correctly registers as attempt #1
+    # FIX: Changed from 1 to 0; first submission now correctly registers as
+    # attempt #1.
+    st.session_state.attempts = 0
 
 if "score" not in st.session_state:
     st.session_state.score = 0
@@ -46,10 +62,17 @@ if "status" not in st.session_state:
 if "history" not in st.session_state:
     st.session_state.history = []
 
+if "completed_scores" not in st.session_state:
+    st.session_state.completed_scores = []
+
+if "score_recorded" not in st.session_state:
+    st.session_state.score_recorded = False
+
 st.subheader("Make a guess")
 
 st.info(
-    f"Guess a number between {low} and {high}. "  #FIX: Milestone 3 — replaced hardcoded 1 and 100 with {low}/{high} variables so banner reflects selected difficulty (Claude Agent)
+    # FIX: Milestone 3 - banner now reflects the selected difficulty range.
+    f"Guess a number between {low} and {high}. "
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
 )
 
@@ -59,6 +82,8 @@ with st.expander("Developer Debug Info"):
     st.write("Score:", st.session_state.score)
     st.write("Difficulty:", difficulty)
     st.write("History:", st.session_state.history)
+    st.write("Completed scores:", st.session_state.completed_scores)
+    st.write("Score recorded:", st.session_state.score_recorded)
 
 raw_guess = st.text_input(
     "Enter your guess:",
@@ -75,7 +100,12 @@ with col3:
 
 if new_game:
     st.session_state.attempts = 0
-    st.session_state.secret = random.randint(low, high)  #FIX: Milestone 4 — replaced hardcoded randint(1,100) with randint(low,high) so New Game respects selected difficulty range (Claude Agent)
+    st.session_state.score = 0
+    st.session_state.status = "playing"
+    st.session_state.history = []
+    st.session_state.score_recorded = False
+    # FIX: Milestone 4 - New Game respects the selected difficulty range.
+    st.session_state.secret = random.randint(low, high)
     st.success("New game started.")
     st.rerun()
 
@@ -96,10 +126,17 @@ if submit:
         st.error(err)
     else:
         st.session_state.history.append(guess_int)
-        secret = st.session_state.secret  #FIX: Milestone 6 — removed even/odd str cast; secret always int, preventing TypeError and impossible wins on even attempts (Claude Agent)
+        # FIX: Milestone 6 - secret always stays an int, preventing impossible
+        # wins on even attempts.
+        secret = st.session_state.secret
 
-        outcome = check_guess(guess_int, secret)  #FIX: Milestone 9 — check_guess now returns plain string; tuple unpacking removed (Claude Agent)
-        messages = {"Win": "🎉 Correct!", "Too High": "📉 Go LOWER!", "Too Low": "📈 Go HIGHER!"}  #FIX: Milestone 9 — messages dict added in app.py to map outcome→display string, keeping logic_utils pure (Claude Agent)
+        # FIX: Milestone 9 - check_guess now returns a plain string.
+        outcome = check_guess(guess_int, secret)
+        messages = {
+            "Win": "🎉 Correct!",
+            "Too High": "📉 Go LOWER!",
+            "Too Low": "📈 Go HIGHER!",
+        }
         message = messages[outcome]
 
         if show_hint:
@@ -114,6 +151,12 @@ if submit:
         if outcome == "Win":
             st.balloons()
             st.session_state.status = "won"
+            if not st.session_state.score_recorded:
+                st.session_state.completed_scores = record_completed_score(
+                    st.session_state.completed_scores,
+                    st.session_state.score,
+                )
+                st.session_state.score_recorded = True
             st.success(
                 f"You won! The secret was {st.session_state.secret}. "
                 f"Final score: {st.session_state.score}"
@@ -121,11 +164,35 @@ if submit:
         else:
             if st.session_state.attempts >= attempt_limit:
                 st.session_state.status = "lost"
+                if not st.session_state.score_recorded:
+                    st.session_state.completed_scores = record_completed_score(
+                        st.session_state.completed_scores,
+                        st.session_state.score,
+                    )
+                    st.session_state.score_recorded = True
                 st.error(
                     f"Out of attempts! "
                     f"The secret was {st.session_state.secret}. "
                     f"Score: {st.session_state.score}"
                 )
+
+current_high_score = get_high_score(st.session_state.completed_scores)
+score_col, high_score_col = st.columns(2)
+with score_col:
+    st.metric("Current score", st.session_state.score)
+with high_score_col:
+    if current_high_score is None:
+        st.metric("High score (last 5 games)", "No games yet")
+    else:
+        st.metric("High score (last 5 games)", current_high_score)
+
+if st.session_state.completed_scores:
+    recent_scores = ", ".join(
+        str(score) for score in st.session_state.completed_scores
+    )
+    st.caption(f"Recent completed game scores: {recent_scores}")
+else:
+    st.caption("Complete a game to start tracking high scores.")
 
 st.divider()
 st.caption("Built by an AI that claims this code is production-ready.")
